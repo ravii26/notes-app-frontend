@@ -40,10 +40,10 @@ function Note() {
   }, [navigate, noteId]);
 
   useEffect(() => {
-    socket.current = io("http://localhost:5000");
+    socket.current = io("https://notes-app-backend-gomt.onrender.com");
 
     socket.current.emit("userInfo", {
-      userId:  localStorage.getItem("token"),
+      userId: localStorage.getItem("token"),
     });
 
     socket.current.on("connect", () => {
@@ -56,7 +56,9 @@ function Note() {
     });
 
     socket.current.emit("sendMessageToList", {
-      userId: localStorage.getItem("token"),message: note, noteId: noteId
+      userId: localStorage.getItem("token"),
+      message: note,
+      noteId: noteId,
     });
 
     socket.current.on("onConnect", (data) => {
@@ -99,7 +101,10 @@ function Note() {
     }
 
     try {
-      const response = await updateNote(noteId, { title: note.title, description: note.description });
+      const response = await updateNote(noteId, {
+        title: note.title,
+        description: note.description,
+      });
       if (response.status === 200) {
         console.log("Note autosaved", response.data);
 
